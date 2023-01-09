@@ -24,6 +24,7 @@ use App\Http\Controllers\PercentageController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WishlistItemController;
+use App\Http\Controllers\GendersController;
 use App\Models\Banner;
 use App\Models\Delivery;
 use App\Models\Percentage;
@@ -46,11 +47,11 @@ use Carbon\Carbon;
 
 Route::group(['middleware' => 'api'], function () {
 
-    Route::get("test-scraper",function(){
+    Route::get("test-scraper", function () {
         $product = Product::find("21883");
         BershkaProductRequest::dispatch($product);
 
-        response("asfasfasfas",200);
+        response("asfasfasfas", 200);
     });
 
     Route::POST('/login', [AuthController::class, 'login']);
@@ -125,7 +126,7 @@ Route::group(['middleware' => 'api'], function () {
 
             // Categories
 
-      
+
 
             //Wishlist
 
@@ -186,29 +187,26 @@ Route::group(['middleware' => 'api'], function () {
                 Route::apiResource('brands', BrandController::class)->except(['create', 'edit']);
                 Route::POST('brands/update_percentage', [BrandController::class, 'update_percentage'])->middleware('updatecurrenciesrate');
 
-                Route::prefix("brands/{brand}/percentage")->group(function(){
-                    
+                Route::prefix("brands/{brand}/percentage")->group(function () {
+
                     //get all brand percentage
-                    Route::get("",[PercentageController::class,"index"]);
+                    Route::get("", [PercentageController::class, "index"]);
 
                     // add percentage
-                    Route::post("",[PercentageController::class,"store"]);
+                    Route::post("", [PercentageController::class, "store"]);
 
 
-                    Route::prefix("{percentage}")->group(function(){
-                        
+                    Route::prefix("{percentage}")->group(function () {
+
                         // get by id
-                        Route::get("",[PercentageController::class,"show"]);
+                        Route::get("", [PercentageController::class, "show"]);
 
                         //update brand percentage
-                        Route::put("",[PercentageController::class,"update"]);
-                    
+                        Route::put("", [PercentageController::class, "update"]);
+
                         //delete brand percentage
-                        Route::delete("",[PercentageController::class,"destroy"]);
-
-                        
+                        Route::delete("", [PercentageController::class, "destroy"]);
                     });
-
                 });
 
                 //deliveries
@@ -348,7 +346,7 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
     //Get cart items
     //Delete cart item
     //update cart item quantity
-    
+
     Route::POST('cart/pre-order', [CartItemController::class, 'preOrder']);
     Route::apiResource('cart', CartItemController::class)->except(['create', 'edit', 'show']);
     // Route::POST('add-to-cart', [CartItemController::class, 'store']);
@@ -362,8 +360,9 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
     Route::GET('user-wishlist-items', [WishlistItemController::class, 'userItems']);
     /*---------------------------- add Category feature-------------------------------------------*/
     Route::GET('categories', [CategoryController::class, 'index']);
+
+    Route::GET('genders', [GendersController::class, 'index']);
     Route::POST('add-category', [CategoryController::class, 'store']);
     Route::POST('edit-category/{id}', [CategoryController::class, 'update']);
     Route::DELETE('delete-category/{id}', [CategoryController::class, 'destroy']);
-
 });

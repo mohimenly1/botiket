@@ -15,6 +15,9 @@ use App\Models\Currency;
 use App\Models\SubCategory;
 use App\Models\Store;
 use App\Models\Quantity;
+
+
+
 use stdClass;
 
 class Product extends Model
@@ -68,7 +71,7 @@ class Product extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
-    protected $appends = ['new_price', 'currency', 'price_usd','old_price_usd'];
+    protected $appends = ['new_price', 'currency', 'price_usd', 'old_price_usd'];
 
     // public function scopeWithAndWhereHas($query, $relation, $constraint)
     // {
@@ -76,35 +79,77 @@ class Product extends Model
     //         ->with([$relation => $constraint]);
     // }
 
-    public function scopeFilter($query, $search)
+    public function scopeFilter($query, array $search)
     {
 
+
+
         if (isset($search['color'])) {
-          //  dd($search['color']);
+            //  dd($search['color']);
             $query->whereHas('quantities', function ($q) use ($search) {
                 $q->where('color_id', $search['color']);
             });
         }
         if (isset($search['size'])) {
             $query->whereHas('quantities', function ($q) use ($search) {
-                $q->where('size_id', $search['size']);
+                $q->where('size', 'like', '%' . $search['size'] . '%');
             });
         }
+
         if (isset($search['brand'])) {
             $query->where('brand_id', $search['brand']);
         }
         if (isset($search['price'])) {
+
             $query->where('price', '<=', $search['price']);
         }
+
+
+        // if (isset($search['price'])) {
+        //     $query->where('price', '<=', $search['price']);
+        // }
+
+
+
+        // if (isset($search['price'])) {
+        //     $query->where('price', '<=', $search['price']);
+        // }
+
+
+
         if (isset($search['sku'])) {
-            $query->where('sku', 'like', '%' . $search['sku'] . '%');
-     
+            $query->where('sku',   $search['sku']);
         }
         if (isset($search['title'])) {
             $query->where('title', 'like', '%' . $search['title'] . '%');
         }
-        return $query;
 
+        if (isset($search['new'])) {
+            $query->where('is_new', 1);
+        }
+
+        if (isset($search['season'])) {
+
+            // dd($search['season']);
+            $query->where('season', '=', $search['season']);
+        }
+
+        if (isset($search['season_store'])) {
+
+            if (isset($search['store'])) {
+                $season_store = Store::where('id', $search['store'])->first()->season;
+
+                $query->where('season', $season_store);
+            }
+        }
+
+
+
+        if (isset($search['store'])) {
+
+            $query->where('store_id', $search['store']);
+        }
+        return $query;
     }
     /**
 
@@ -177,7 +222,7 @@ class Product extends Model
     }
 
 
-    
+
     public function getNewPriceAttribute()
     {
         $new_price = null;
@@ -188,15 +233,15 @@ class Product extends Model
                 if ($offer != null && $offer->is_percentage === 1) {
 
                     $descount_value = ($this->discount_price * $offer->value) / 100;
-                    $new_price =round($this->discount_price - $descount_value,3);
+                    $new_price = round($this->discount_price - $descount_value, 3);
                 } else {
-                    $new_price = round($this->discount_price - $offer->value,3);
+                    $new_price = round($this->discount_price - $offer->value, 3);
                 }
             }
-        }elseif($this->discount_price != $this->price && $this->discount_price != 0){
+        } elseif ($this->discount_price != $this->price && $this->discount_price != 0) {
             $new_price = $this->discount_price;
         }
-        return $new_price != null ? ceil($new_price) : $new_price ;
+        return $new_price != null ? ceil($new_price) : $new_price;
     }
 
 
@@ -205,37 +250,36 @@ class Product extends Model
     {
         $price = $this->new_price ? $this->new_price : $this->price;
 
-        if($this->brand_id){
+        if ($this->brand_id) {
             $selling_id = Brand::find($this->brand_id)->selling_currency_id;
             $Currency = Currency::find($selling_id);
             return ($price * $Currency->rate);
-        }else{
+        } else {
             return ($price * Currency::find(69)->rate);
         }
-
     }
     public function getOldPriceUsdAttribute()
     {
         $price = $this->price;
 
-        if($this->brand_id){
+        if ($this->brand_id) {
             $selling_id = Brand::find($this->brand_id)->selling_currency_id;
             $Currency = Currency::find($selling_id);
             return ($price * $Currency->rate);
-        }else{
+        } else {
             return ($price * Currency::find(69)->rate);
         }
-
     }
 
 
 
-    public function getCurrencyAttribute(){
-        if($this->brand_id){
+    public function getCurrencyAttribute()
+    {
+        if ($this->brand_id) {
             $selling_id = Brand::find($this->brand_id)->selling_currency_id;
             $Currency = Currency::find($selling_id);
             return $Currency;
-        }else{
+        } else {
             return Currency::find(69);
         }
     }

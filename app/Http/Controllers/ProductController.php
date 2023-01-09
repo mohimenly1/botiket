@@ -43,6 +43,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+
         try {
             $data = $this->product_service->index();
             return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), $data, 200);
@@ -58,6 +59,7 @@ class ProductController extends Controller
      */
     public function filterProducts(Request $request)
     {
+
         try {
             $data = $this->product_service->filterProducts($request);
             return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), $data, 200);
@@ -66,24 +68,24 @@ class ProductController extends Controller
         }
     }
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    public function skus( Request $req)
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function skus(Request $req)
     {
         try {
-            $data = $this->product_service->skus($req->query('search',''));
+            $data = $this->product_service->skus($req->query('search', ''));
             return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), $data, 200);
         } catch (\Exception $e) {
             return $this->prepare_response([$e], __('auth.Something went wrong'), null, 400);
         }
     }
     /**
-        * Display a listing of the resource.
-        *
-        * @return \Illuminate\Http\Response
-        */
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function indexDeleted()
     {
         try {
@@ -102,15 +104,15 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-       // $all_brands = $this->brand_service->index();
-      //  return dd($all_brands);
-       try {
+        // $all_brands = $this->brand_service->index();
+        //  return dd($all_brands);
+        try {
 
-           DB::transaction(function () use ($request ) {
+            DB::transaction(function () use ($request) {
 
                 $data = $this->product_service->store($request);
 
-                if($request->brand_id){
+                if ($request->brand_id) {
 
                     $request->validate([
                         'original_price' => "required|numeric",
@@ -120,12 +122,11 @@ class ProductController extends Controller
                     $brand = $this->brand_service->show($request->brand_id);
                     $this->brand_service->check_product_price($data, $brand);
                 }
-
-             });
+            });
 
 
             return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), null, 200);
-       } catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->prepare_response([$e], __('auth.Something went wrong'), null, 400);
         }
     }
@@ -155,22 +156,22 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         try {
-            DB::transaction(function () use ( $request, $id ) {
+            DB::transaction(function () use ($request, $id) {
 
-            $data = $this->product_service->update($request, $id);
-            //return $data;
-            if($data->brand_id){
+                $data = $this->product_service->update($request, $id);
+                //return $data;
+                if ($data->brand_id) {
 
-                $brand = $this->brand_service->show($data->brand_id);
-                $this->brand_service->check_product_price($data, $brand);
-             }
-        });
+                    $brand = $this->brand_service->show($data->brand_id);
+                    $this->brand_service->check_product_price($data, $brand);
+                }
+            });
             return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), null, 200);
         } catch (\Exception $e) {
             return $this->prepare_response([$e], __('auth.Something went wrong'), null, 400);
-       }
+        }
     }
 
     /**
@@ -205,10 +206,10 @@ class ProductController extends Controller
     }
 
     /**
-        * Display a listing of the brands.
-        *
-        * @return \Illuminate\Http\Response
-        */
+     * Display a listing of the brands.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function quantities($id)
     {
         try {
@@ -217,11 +218,12 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return $this->prepare_response([$e], __('auth.Something went wrong'), null, 400);
         }
-    }/**
-        * Display a listing of the brands.
-        *
-        * @return \Illuminate\Http\Response
-        */
+    }
+    /**
+     * Display a listing of the brands.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function data()
     {
         try {
@@ -233,10 +235,10 @@ class ProductController extends Controller
     }
 
     /**
-       * Display a listing of the brands.
-       *
-       * @return \Illuminate\Http\Response
-       */
+     * Display a listing of the brands.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function brands()
     {
         try {
@@ -247,10 +249,10 @@ class ProductController extends Controller
         }
     }
     /**
-    * Display a listing of the genders.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Display a listing of the genders.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function genders()
     {
         try {
@@ -261,10 +263,10 @@ class ProductController extends Controller
         }
     }
     /**
-    * Display a listing of the colors.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Display a listing of the colors.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function colors()
     {
@@ -277,10 +279,10 @@ class ProductController extends Controller
     }
 
     /**
-   * Display a listing of the offers.
-   *
-   * @return \Illuminate\Http\Response
-   */
+     * Display a listing of the offers.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function offers()
     {
         try {
@@ -291,10 +293,10 @@ class ProductController extends Controller
         }
     }
     /**
-  * Display a listing of the main Categories.
-  *
-  * @return \Illuminate\Http\Response
-  */
+     * Display a listing of the main Categories.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function mainCategories($gender)
     {
         try {
@@ -305,10 +307,10 @@ class ProductController extends Controller
         }
     }
     /**
- * Display a listing of the sub Categories.
- *
- * @return \Illuminate\Http\Response
- */
+     * Display a listing of the sub Categories.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function subCategories($category)
     {
         try {
@@ -320,10 +322,10 @@ class ProductController extends Controller
     }
 
     /**
-        * Display a listing of the resource with Filtering.
-        *
-        * @return \Illuminate\Http\Response
-        */
+     * Display a listing of the resource with Filtering.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function filter(Request $request)
     {
         try {
@@ -343,15 +345,15 @@ class ProductController extends Controller
         }
     }
     /**
-    * Display a listing of the resource with Filtering.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Display a listing of the resource with Filtering.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function report(Request $request)
     {
         // try {
-            $data = $this->product_service->report($request);
-            return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), $data, 200);
+        $data = $this->product_service->report($request);
+        return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), $data, 200);
         // } catch (\Exception $e) {
         //     return $this->prepare_response([$e], __('auth.Something went wrong'), null, 400);
         // }
@@ -360,10 +362,10 @@ class ProductController extends Controller
 
     /************************** Class B **********************************/
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function classBIndex(Request $request)
     {
         try {
@@ -450,33 +452,29 @@ class ProductController extends Controller
     {
 
         $model = Product::find($id);
-        if($model->is_new !== null && $model->brand_id == 25 ){
-            
-            do{
-            $ch = curl_init("https://www.zara.com/tr/en/products-details?productIds=".$model['OEM']."&ajax=true");
-            $proxy = "smartproxy.proxycrawl.com:8012";
+        if ($model->is_new !== null && $model->brand_id == 25) {
+
+            do {
+                $ch = curl_init("https://www.zara.com/tr/en/products-details?productIds=" . $model['OEM'] . "&ajax=true");
+                $proxy = "smartproxy.proxycrawl.com:8012";
                 curl_setopt($ch, CURLOPT_PROXY, $proxy);
                 curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, 'krKiymVzKxiMF8D5n6Ds7w');
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $api_product_response = curl_exec($ch);
-            curl_close($ch);
-            }
-            while($api_product_response === false);
-            
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $api_product_response = curl_exec($ch);
+                curl_close($ch);
+            } while ($api_product_response === false);
+
             $api_product_response = json_decode($api_product_response, true);
             // dd($api_product_response);
-           if(isset($api_product_response) && count($api_product_response)){
-               
-            $api_product_response = $api_product_response[0];
-            $product_details = $api_product_response;
-            $this->handelProductUpdate(Product::find($id), $product_details);
-            
-           }
+            if (isset($api_product_response) && count($api_product_response)) {
 
-
+                $api_product_response = $api_product_response[0];
+                $product_details = $api_product_response;
+                $this->handelProductUpdate(Product::find($id), $product_details);
+            }
         }
 
         try {
@@ -484,18 +482,16 @@ class ProductController extends Controller
 
             $lastUpdate = new Carbon($model->updated_at);
             $diff = $lastUpdate->diffInMinutes(Carbon::now());
-            
+
 
             // update only if 5 min elapsed since the last update to make sure we dont get baned
-            if($diff > 5 ){
-                $class =  "\App\Events"."\\". Str::studly(strtolower($model->brand->name)) . 'ProductRequest';
+            if ($diff > 5) {
+                $class =  "\App\Events" . "\\" . Str::studly(strtolower($model->brand->name)) . 'ProductRequest';
                 $class::dispatch($model);
-    
+
                 $model->updated_at = Carbon::now();
                 $model->save();
             }
-
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
@@ -696,7 +692,7 @@ class ProductController extends Controller
 
     public function handelProductUpdate(Product $model, $product_details)
     {
-        
+
 
         //update product meadia
         foreach ($product_details['detail']['colors'] as $color) {
@@ -711,16 +707,15 @@ class ProductController extends Controller
 
             // if media dosen't exist , just add it
 
-        if(!$media_exist){
-            foreach ($color['xmedia'] as $media) {
-                ProductMedia::create([
-                    "product_id" => $model->id,
-                    "color_id" => $color_model->id,
-                    "path" => $media['path']
-                ]);
+            if (!$media_exist) {
+                foreach ($color['xmedia'] as $media) {
+                    ProductMedia::create([
+                        "product_id" => $model->id,
+                        "color_id" => $color_model->id,
+                        "path" => $media['path']
+                    ]);
+                }
             }
-            
-        }
 
 
             //update product quantities
@@ -761,7 +756,8 @@ class ProductController extends Controller
         // }
     }
 
-    public function scrape(){
+    public function scrape()
+    {
         ProcessScrapedData::dispatch($this->product_service, $this->brand_service);
 
         return $this->prepare_response(null, __('auth.data returned') . __('auth.successfully'), null, 200);
@@ -769,7 +765,4 @@ class ProductController extends Controller
         //     return $this->prepare_response([$e], __('auth.Something went wrong'), null, 400);
         // }
     }
-
-
-
 }
