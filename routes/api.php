@@ -349,7 +349,7 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
 
     Route::POST('cart/pre-order', [CartItemController::class, 'preOrder']);
     Route::apiResource('cart', CartItemController::class)->except(['create', 'edit', 'show']);
-    // Route::POST('add-to-cart', [CartItemController::class, 'store']);
+    Route::POST('add-to-cart', [CartItemController::class, 'store']);
     Route::POST('order', [CartItemController::class, 'order']);
 
     /*---------------------------- Wishlist feature-------------------------------------------*/
@@ -363,6 +363,8 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
 
     Route::GET('genders', [GendersController::class, 'index']);
     Route::POST('add-category', [CategoryController::class, 'store']);
-    Route::POST('edit-category/{id}', [CategoryController::class, 'update']);
+    Route::get('edit-category/{id}', [CategoryController::class, 'edit']);
+    Route::get('get-category/{id}', [CategoryController::class, 'edit']);
+    Route::post('update-category/{id}', [CategoryController::class, 'update']);
     Route::DELETE('delete-category/{id}', [CategoryController::class, 'destroy']);
 });

@@ -76,6 +76,7 @@ class CartRepository
 
     public function store($request)
     {
+        
         try {
             DB::beginTransaction();
             foreach($request->products as $product){
@@ -90,12 +91,15 @@ class CartRepository
                 $product['user_id'] = Auth::id();
                 $product['quantity_id'] = $quantity->id;
                 $card = $this->model->where('product_id',$product['product_id'])->where('user_id',$product['user_id'])->where('quantity_id',$product['quantity_id'])->first();
+                
                 if ($card) { 
                     $card->update([$card->quantity++]);    
                     // $card->quantity++;         
                     // $card->save();
+                    
                 } else {
                     $card = $this->model->create(['product_id' =>$product['product_id'],'user_id' => $product['user_id'],'quantity_id' => $product['quantity_id'], 'color_id' => $product['color_id']]);
+                  
                     $card->save();
                 }
              }
@@ -103,7 +107,8 @@ class CartRepository
         }
         catch (Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
+            
         }
       
         // // dd($request->all());
