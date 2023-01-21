@@ -57,21 +57,21 @@ class ProductRepository
         $user = Auth::user();
         if ($user->role == 'super-admin') {
             $model =  Product::with(['gender:id,name', 'category:id,name', 'subCategory:id,name', 'firstMedia'])
-            ->whereNotNull('brand_id')
-            ->whereNull('store_id')
-            ->orWhereHas('store', function ($query) {
-              $query->where('class_a_access', '=', 1);
-               })
-               ->filter(Request()->get("search"))
-            ->paginate(10, ['id', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
-            return $model; 
+                ->whereNotNull('brand_id')
+                ->whereNull('store_id')
+                ->orWhereHas('store', function ($query) {
+                    $query->where('class_a_access', '=', 1);
+                })
+                ->filter(Request()->all())
+                ->paginate(10, ['id', 'highlight', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
+            return $model;
         } elseif ($user->role == 'store-admin') {
             $model =  Product::with(['gender:id,name', 'category:id,name', 'subCategory:id,name', 'firstMedia'])
                 ->filter(Request()->only("search"))
                 ->where('store_id', $user->store()->first()->id)
                 ->with(['gender:id,name', 'category:id,name', 'subCategory:id,name', 'firstMedia'])
-                ->paginate(10, ['id', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
-                return $model;
+                ->paginate(10, ['id', 'highlight', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
+            return $model;
         }
     }
 
@@ -294,6 +294,8 @@ class ProductRepository
         $this->model->category_id = $request->category_id;
         $this->model->gender_id = $request->gender_id;
         $this->model->offer_id = $request->offer_id;
+        $this->model->highlight = $request->highlight;
+
 
         if ($this->model->discount_price > $this->model->price || $this->model->discount_price < ($this->model->price * 0.05))
             throw new \ErrorException('discount_price not valid: must be >=price || <= price*0.25 ');
@@ -375,13 +377,12 @@ class ProductRepository
                 } elseif ($old_media) {
                     $color_id = Color::where('color_value', $media['color'])->first();
                     $delete_old_image = Storage::disk('s3')->delete($old_media->path);
-                    
+
 
                     $image_path = $media['file']->store('/products/' . $product->id, 's3');
                     Storage::disk('s3')->setVisibility($image_path, 'public');
-                    
-                    $old_media->update(['path' => Storage::disk('s3')->url($image_path), "color_id" => $color_id->id]);
 
+                    $old_media->update(['path' => Storage::disk('s3')->url($image_path), "color_id" => $color_id->id]);
                 } elseif ($media["file"] != 0 && !$old_media) {
                     $color_id = Color::where('color_value', $media['color'])->first();
                     $image_path = $media['file']->store('/products/' . $product->id, 's3');
@@ -696,7 +697,7 @@ class ProductRepository
             foreach ($request->medias as $media) {
                 $color_id = Color::where('color_value', $media['color'])->first();
 
-                $image_path = $media['file']->store('/products/' . $this->model->id , 's3');
+                $image_path = $media['file']->store('/products/' . $this->model->id, 's3');
                 Storage::disk('s3')->setVisibility($image_path, 'public');
 
                 $this->model->medias()->create(

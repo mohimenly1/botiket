@@ -47,7 +47,8 @@ class Product extends Model
         'offer_id',
         'gender_id',
         'is_archived',
-        'is_new'
+        'is_new',
+        'highlight'
     ];
     // protected $appends = ['mediasFirst'];
 
@@ -117,8 +118,10 @@ class Product extends Model
 
 
 
-        if (isset($search['sku'])) {
-            $query->where('sku',   $search['sku']);
+        if (isset($search['search']['sku'])) {
+
+
+            $query->where('sku', '=',  $search['search']['sku']);
         }
         if (isset($search['title'])) {
             $query->where('title', 'like', '%' . $search['title'] . '%');
@@ -134,21 +137,21 @@ class Product extends Model
             $query->where('season', '=', $search['season']);
         }
 
-        if (isset($search['season_store'])) {
 
-            if (isset($search['store'])) {
-                $season_store = Store::where('id', $search['store'])->first()->season;
 
-                $query->where('season', $season_store);
-            }
+        if (isset($search['products_by_store_season'])) {
+            $store_id = Store::where('id', $search['products_by_store_season'])->first()->season;
+            // dd($season_store);
+            $query->where('season', $store_id);
         }
 
 
 
-        if (isset($search['store'])) {
 
-            $query->where('store_id', $search['store']);
-        }
+        // if (isset($search['store'])) {
+
+        //     $query->where('store_id', $search['store']);
+        // }
         return $query;
     }
     /**
@@ -225,6 +228,7 @@ class Product extends Model
 
     public function getNewPriceAttribute()
     {
+
         $new_price = null;
         if ($this->offer_id != null) {
             $offer = Offer::where('id', $this->offer_id)->whereNull('deleted_at')->get()->first();
@@ -248,6 +252,7 @@ class Product extends Model
 
     public function getPriceUsdAttribute()
     {
+
         $price = $this->new_price ? $this->new_price : $this->price;
 
         if ($this->brand_id) {

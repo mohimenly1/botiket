@@ -13,6 +13,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\FavoriteController;
@@ -349,7 +350,7 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
 
     Route::POST('cart/pre-order', [CartItemController::class, 'preOrder']);
     Route::apiResource('cart', CartItemController::class)->except(['create', 'edit', 'show']);
-    // Route::POST('add-to-cart', [CartItemController::class, 'store']);
+    Route::POST('add-to-cart', [CartItemController::class, 'store']);
     Route::POST('order', [CartItemController::class, 'order']);
 
     /*---------------------------- Wishlist feature-------------------------------------------*/
@@ -365,4 +366,5 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
     Route::POST('add-category', [CategoryController::class, 'store']);
     Route::POST('edit-category/{id}', [CategoryController::class, 'update']);
     Route::DELETE('delete-category/{id}', [CategoryController::class, 'destroy']);
+    Route::POST('add-color', [ColorController::class, 'store']);
 });

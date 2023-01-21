@@ -14,7 +14,7 @@ class AddColorIdToCartItemsTable extends Migration
     public function up()
     {
         Schema::table('cart_items', function (Blueprint $table) {
-            $table->integer('color_id')->unsigned()->nullable();
+            $table->foreignId('color_id')->nullable()->constrained();
         });
     }
 

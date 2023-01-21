@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Color;
+use App\Http\Requests\ColorRequest;
 use Illuminate\Http\Request;
 
 class ColorController extends Controller
@@ -33,9 +34,21 @@ class ColorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ColorRequest $request)
     {
-        //
+
+
+
+        $color = Color::create([
+            'name' => $request->name,
+            'color_value' => $request->color_value,
+
+        ]);
+        return response()->json([
+            "message" => "تمت إضافة اللون بنجاح",
+            "status" => 201,
+            'data' => $color,
+        ]);
     }
 
     /**
