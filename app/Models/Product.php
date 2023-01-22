@@ -139,11 +139,11 @@ class Product extends Model
 
 
 
-        if (isset($search['products_by_store_season'])) {
-            $store_id = Store::where('id', $search['products_by_store_season'])->first()->season;
-            // dd($season_store);
-            $query->where('season', $store_id);
-        }
+        // if (isset($search['products_by_store_season'])) {
+        //     $store_id = Store::where('id', $search['products_by_store_season'])->first()->season;
+        //     // dd($season_store);
+        //     $query->where('season', $store_id);
+        // }
 
 
 

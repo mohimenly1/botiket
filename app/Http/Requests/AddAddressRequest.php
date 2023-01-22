@@ -26,12 +26,13 @@ class AddAddressRequest extends AbstractFormRequest
      */
     public function rules()
     {
+
         return [
-            'title'=>'required|string',
+            'title' => 'required|string',
             'city_id' => 'required|exists:cities,id',
-            'description'=>'string',
-            'latitude'=>'string',
-            'longitude'=>'string'
+            'description' => 'string',
+            'latitude' => 'string',
+            'longitude' => 'string'
         ];
     }
 }
