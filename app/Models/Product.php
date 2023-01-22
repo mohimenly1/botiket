@@ -48,7 +48,8 @@ class Product extends Model
         'gender_id',
         'is_archived',
         'is_new',
-        'highlight'
+        'highlight',
+        'season'
     ];
     // protected $appends = ['mediasFirst'];
 
