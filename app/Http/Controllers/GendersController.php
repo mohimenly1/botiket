@@ -10,10 +10,10 @@ class GendersController extends Controller
 {
     public function index()
     {
-        $categories = Gender::all();
+        $genders = Gender::all();
         return response()->json([
             "status" => 200,
-            'data' => $categories,
+            'data' => $genders,
         ]);
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\FavoriteController;
@@ -367,4 +368,5 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
     Route::get('get-category/{id}', [CategoryController::class, 'edit']);
     Route::post('update-category/{id}', [CategoryController::class, 'update']);
     Route::DELETE('delete-category/{id}', [CategoryController::class, 'destroy']);
+    Route::POST('add-color', [ColorController::class, 'store']);
 });

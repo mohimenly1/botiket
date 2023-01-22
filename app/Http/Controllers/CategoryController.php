@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Gender;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 
 
 class CategoryController extends Controller
@@ -35,28 +36,28 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required||unique:categories',
-            'image' => 'required',
-            'gender_id' => 'required',
-        ]);
+        // $request->validate([
+        //     'name' => 'required||unique:categories',
+        //     'image' => 'required',
+        //     'gender_id' => 'required',
+        // ]);
         $gender = Gender::find($request->gender_id);
         $image = $request->image;
         $imageName = $request->name . $gender->name . '.jpg';
-        $image->move(public_path('images/categories'),$imageName);
+        $image->move(public_path('images/categories'), $imageName);
         $request->image = '/images/categories/' . $imageName;
-            $category = Category::create([
-                'name' => $request->name,
-                'image' => $request->image,
-                'gender_id' => $request->gender_id,
-            ]);
-            return response()->json([
-                "message" => "تمت إضافة التصنيف بنجاح",
-                 "status" => 201,
-                 'data' => $category,
-            ]);
+        $category = Category::create([
+            'name' => $request->name,
+            'image' => $request->image,
+            'gender_id' => $request->gender_id,
+        ]);
+        return response()->json([
+            "message" => "تمت إضافة التصنيف بنجاح",
+            "status" => 201,
+            'data' => $category,
+        ]);
     }
     /**
      * Display the specified resource.
@@ -91,11 +92,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-            $gender = Gender::find($request->gender_id);
+        $gender = Gender::find($request->gender_id);
         if (request()->has('image')) {
             $image = $request->image;
             $imageName = $request->name . $gender->name . '.jpg';
-            $image->move(public_path('images/categories'),$imageName);
+            $image->move(public_path('images/categories'), $imageName);
             $request->image = '/images/categories/' . $imageName;
             $category = Category::find($request->id);
             $category->update([
@@ -103,12 +104,12 @@ class CategoryController extends Controller
                 'image' => $request->image,
                 'gender_id' => $request->gender_id,
             ]);
-        }else{
-        $category = Category::find($request->id);
-        $category->update(
-            $request->all()
-        );
-       }
+        } else {
+            $category = Category::find($request->id);
+            $category->update(
+                $request->all()
+            );
+        }
         return response()->json([
             "message" => "تمت تعديل التصنيف بنجاح",
             "status" => 202,
