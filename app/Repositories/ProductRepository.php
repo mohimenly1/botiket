@@ -314,12 +314,13 @@ class ProductRepository
             foreach ($request->medias as $key => $media) {
                 $color_id = Color::where('color_value', $media['color'])->first();
 
-                $image_path = $media['file']->store('/products/' . $this->model->id  . '/' . $this->model->sku . '-' . $key, 's3');
-                Storage::disk('s3')->setVisibility($image_path, 'public');
+                $image_path = $media['file']->store('/products/' . $this->model->id  . '/' . $this->model->sku . '-' . $key, 'public');
+
+                Storage::disk('public')->setVisibility($image_path, 'public');
 
                 $this->model->medias()->create(
                     [
-                        'path' => Storage::disk('s3')->url($image_path),
+                        'path' => Storage::disk('public')->url($image_path),
                         'color_id' => $color_id->id
                     ]
                 );

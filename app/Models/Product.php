@@ -48,7 +48,8 @@ class Product extends Model
         'gender_id',
         'is_archived',
         'is_new',
-        'highlight'
+        'highlight',
+        'season'
     ];
     // protected $appends = ['mediasFirst'];
 
@@ -100,10 +101,11 @@ class Product extends Model
         if (isset($search['brand'])) {
             $query->where('brand_id', $search['brand']);
         }
-        if (isset($search['price'])) {
 
-            $query->where('price', '<=', $search['price']);
+        if (isset($search['price'])) {
+            $query->whereBetween('price', ['50', '70']);
         }
+
 
 
         // if (isset($search['price'])) {

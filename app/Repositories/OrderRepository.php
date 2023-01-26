@@ -58,9 +58,9 @@ class OrderRepository
                 ->select('order_status_id', 'id', 'user_id', 'store_id', 'total_amount', 'delivery_date', "created_at", 'delivery_id', 'address_id')
                 ->allowedIncludes(['address.city'])
                 ->whereNull('store_id')
-                ->with(['statu:id,status', 'delivery:id,name', 'user:id,name','address.city'])
+                ->with(['statu:id,status', 'delivery:id,name', 'user:id,name', 'address.city'])
                 ->allowedSorts(['total_amount', 'delivery_date', 'order_status_id'])
-                ->groupBy('order_status_id','id')
+                ->groupBy('order_status_id', 'id')
                 ->allowedFilters(['id', 'user.name', 'order_status_id'])
                 ->paginate(10);
         } elseif ($user->role == 'store-admin') {
@@ -149,7 +149,7 @@ class OrderRepository
         $this->model->save();
 
 
-////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
         if ($request->has('products')) {
             $total_amount = [];
             $discount = $old_amount = 0;
@@ -158,7 +158,7 @@ class OrderRepository
             foreach ($request->products as $product => $data) {
                 $new_price = Product::where('id', $product)->first()->new_price;
                 $product_price = $new_price ? $new_price : Product::where('id', $product)->first()->price;
-                
+
                 $user_cart_products = User::where('id', $request->user_id)->first()->cartproducts()->where('product_id', $product)->pluck('discount')->first();
                 $price =  $product_price;
 
@@ -174,18 +174,18 @@ class OrderRepository
                 ]);
 
                 //if whishlist price exsit then convert it and assign it to the $product_price_usd
-                $product_price_usd = $user_cart_products ? ($user_cart_products*Product::find($product)->currency->rate) : Product::find($product)->price_usd;
+                $product_price_usd = $user_cart_products ? ($user_cart_products * Product::find($product)->currency->rate) : Product::find($product)->price_usd;
                 $product_old_price_usd = Product::find($product)->old_price_usd;
 
                 $total_amount[] = $data['quantity'] * $product_price_usd;
-                $discount += (($product_old_price_usd-$product_price_usd) * $data['quantity']);
+                $discount += (($product_old_price_usd - $product_price_usd) * $data['quantity']);
 
                 $old_amount += $product_price_usd * $data['quantity'];
             }
         }
-        
-///////////////////////////////////////////////////////////////////////////
-         $local_currency = Currency::find(69);
+
+        ///////////////////////////////////////////////////////////////////////////
+        $local_currency = Currency::find(69);
         $total_price = array_sum($total_amount);
         //return $total_price;
 
@@ -196,8 +196,8 @@ class OrderRepository
                     $discount += ($total_price * $coupon->value / 100);
                     $total_price -= ($total_price * $coupon->value / 100);
                 } else {
-                    $total_price -= ($coupon->value*$local_currency->rate);;
-                    $discount += ($coupon->value*$local_currency->rate);;
+                    $total_price -= ($coupon->value * $local_currency->rate);;
+                    $discount += ($coupon->value * $local_currency->rate);;
                 }
                 $request['coupon_id'] = $coupon->id;
             }
@@ -222,7 +222,6 @@ class OrderRepository
         $this->model->invoice()->create($request->all());
         DB::commit();
         return $this->model->id;
-
     }
     /**
      * Update Profile
@@ -249,7 +248,7 @@ class OrderRepository
                     $old_product->delete();
                 } elseif ($data != 0) {
                     $new_price = Product::where('id', $product)->first()->new_price;
-                    
+
                     $product_price = $new_price ? $new_price : Product::where('id', $product)->first()->price;
 
                     $user_cart_products = User::where('id', $Order->user_id)->first()->cartproducts()->where('product_id', $product)->pluck('discount')->first();
@@ -271,7 +270,6 @@ class OrderRepository
                             'total_amount' => $data['quantity'] * $price
                         ]);
                     }
-                    
                 }
             }
         }
@@ -283,8 +281,8 @@ class OrderRepository
         foreach ($Order->items as $item) {
             $discount = 0;
             $old_amount = 0;
-        
-            
+
+
             // Price Decision START
             $new_price = Product::where('id', $item->product_id)->first()->new_price;
             $product_price = $new_price ? $new_price : Product::where('id', $item->product_id)->first()->price;
@@ -294,62 +292,61 @@ class OrderRepository
             // Price Decision END
 
             //if whishlist price exsit then convert it and assign it to the $product_price_usd
-            $product_price_usd = $user_cart_products ? $user_cart_products * Product::find($item->product_id)->currency->rate: Product::find($item->product_id)->price_usd;
+            $product_price_usd = $user_cart_products ? $user_cart_products * Product::find($item->product_id)->currency->rate : Product::find($item->product_id)->price_usd;
             $product_old_price_usd = Product::find($item->product_id)->old_price_usd;
 
             $total_amount[] = ($item->quantity * $product_price_usd);
 
             $old_amount += ($product_old_price_usd *  $item->quantity);
 
-            $discount += ( $product_old_price_usd - $product_price_usd) *  $item->quantity;
-
-            
+            $discount += ($product_old_price_usd - $product_price_usd) *  $item->quantity;
         }
 
         //in USD
         $total_price = array_sum($total_amount);
-$coupon = null;
-        if ($request->has('coupon_code') ) {
+        $coupon = null;
+        if ($request->has('coupon_code')) {
             $coupon = Coupon::where('code', $request->coupon_code)->first();
-            if ($coupon->usage_count > 0 || $coupon->id == $Order->invoice->coupon_id ) {
-            
+            if ($coupon->usage_count > 0 || $coupon->id == $Order->invoice->coupon_id) {
+
                 if ($coupon->is_percentage == 1) {
                     // dd($total_price,$coupon->value,100);
                     $discount += ($total_price * $coupon->value / 100);
                     $total_price -= ($total_price * $coupon->value / 100);
                 } else {
                     //conveting the coupon to usd before substracting it from the $total_price
-                    $total_price -= ($coupon->value*$local_currency->rate);
+                    $total_price -= ($coupon->value * $local_currency->rate);
                     //conveting the coupon to usd before adding it to the $discount
-                    $discount += ($coupon->value*$local_currency->rate);
+                    $discount += ($coupon->value * $local_currency->rate);
                 }
-               
-                if($coupon->id != $Order->invoice->coupon_id){
-                  $coupon->usage_count--;
-                    $coupon->save();  
+
+                if ($coupon->id != $Order->invoice->coupon_id) {
+                    $coupon->usage_count--;
+                    $coupon->save();
                 }
-                
+
                 $Order->total_amount = $total_price;
             }
         }
-        
+
         if ($request->has('discount')) {
             $total_price -= $request->discount;
             //converting the request discount to usd then adding it to the $discount
-            $discount += ceil($request->discount*$local_currency->rate);
+            $discount += ceil($request->discount * $local_currency->rate);
 
             //converting the $discount to lyd then updaing the invoice with this amount
-            $invoice = $Order->invoice()->update(['discount' => ceil($discount*$local_currency->reverse_rate)]);
+            $invoice = $Order->invoice()->update(['discount' => ceil($discount * $local_currency->reverse_rate)]);
         }
 
         $invoice = $Order->invoice()->update(
-            ['discount' => intval($discount*$local_currency->reverse_rate),
-            'coupon_id' => $coupon ? $coupon->id : null
+            [
+                'discount' => intval($discount * $local_currency->reverse_rate),
+                'coupon_id' => $coupon ? $coupon->id : null
             ]
-            );
+        );
 
-        //the rest_amount needs to be updated 
-       $Order->invoice()->update(['rest_amount' => ceil($total_price*$local_currency->reverse_rate)]);
+        //the rest_amount needs to be updated
+        $Order->invoice()->update(['rest_amount' => ceil($total_price * $local_currency->reverse_rate)]);
 
 
         $Order->old_amount = ceil($old_amount * $local_currency->reverse_rate);
@@ -385,8 +382,7 @@ $coupon = null;
         } elseif ($Order->order_status_id == 2) {
             $title = __('notifications.order_on_hold');
             $body = __('notifications.order_on_hold_body');
-        }
-         else {
+        } else {
             $title = 'تم تعديل الطلب';
             $body = "تم تعديل طلبك يرجى التحقق";
         }
@@ -628,6 +624,9 @@ $coupon = null;
             ->with(['statu', 'firstItem'])
             ->orderBy('id', 'desc')
             ->get(['id', 'order_status_id', 'total_amount', 'created_at']);
+
+
+        // dd($orders);
         foreach ($orders as $order) {
             $order['items_quantity'] = $order->items()->sum('quantity');
             if (count($order['firstItem']) > 0) {
@@ -637,6 +636,7 @@ $coupon = null;
             }
             unset($order['firstItem']);
         }
+        // dd($orders);
         return $orders;
     }
 

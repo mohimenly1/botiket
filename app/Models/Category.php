@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\URL;
 
 class Category extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +19,8 @@ class Category extends Model
     protected $fillable = [
         'name',
         'image',
-        'gender_id'
+        'gender_id',
+        'second_image'
     ];
 
     /**
@@ -34,8 +35,9 @@ class Category extends Model
         'pivot',
 
     ];
-    public function scopeFilter($query , $search){
-        return $query->where('name','like','%'.$search.'%');
+    public function scopeFilter($query, $search)
+    {
+        return $query->where('name', 'like', '%' . $search . '%');
     }
     public function stores()
     {
@@ -44,7 +46,7 @@ class Category extends Model
 
     public function getImageAttribute()
     {
-        $image=URL::to('/').$this->attributes['image'];
+        $image = URL::to('/') . $this->attributes['image'];
         return $image;
     }
     public function subCategories()
@@ -59,5 +61,4 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
-    
 }

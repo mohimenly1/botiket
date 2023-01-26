@@ -2,79 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Gender;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PriceRangeRequest;
+use App\Models\PriceRange;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
-use Illuminate\Support\Facades\Storage;
 
-class CategoryController extends Controller
+class PriceRangesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $categories = Category::with('subCategories')->filter(request()->get('search'))->paginate(10);
+        $price_range = PriceRange::paginate(10);
         return response()->json([
             "status" => 200,
-            'data' => $categories,
+            'data' => $price_range,
         ]);
     }
     /**
      * Show the form for creating a new resource.
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(PriceRangeRequest $request)
     {
-        // $request->validate([
-        //     'name' => 'required||unique:categories',
-        //     'image' => 'required',
-        //     'gender_id' => 'required',
-        // ]);
-        $gender = Gender::find($request->gender_id);
-        ///
-
-        $image_path = $request->image->store('/categories', 'public');
-        Storage::disk('public')->setVisibility($image_path, 'public');
-        $image = Storage::disk('public')->url($image_path);
-
-
-        // $image = $request->image;
-        // $imageName = $request->name . $gender->name . "-" . rand(1000, 2000) . '.jpg';
-        // $image->move(public_path('images/categories'), $imageName);
-        // $request->image = '/images/categories/' . $imageName;
-        //////---
-        $second_image_path = $request->second_image->store('/categories', 'public');
-        Storage::disk('public')->setVisibility($second_image_path, 'public');
-        $second_image = Storage::disk('public')->url($second_image_path);
-        //dd($image);
-        // $second_image = $request->second_image;
-        // $imageName_second_image = $request->name . $gender->name . "-" . rand(3000, 4000) . '.jpg';
-        // $second_image->move(public_path('images/categories'), $imageName_second_image);
-        // $request->second_image = '/images/categories/' . $imageName_second_image;
-        /////---
-        $category = Category::create([
-            'name' => $request->name,
-            'image' => $image,
-            'second_image' => $second_image,
-            'gender_id' => $request->gender_id,
+        ///---
+        $price_range = PriceRange::create([
+            'price_from' => $request->price_from,
+            'price_to' => $request->price_to,
+            'selling_price' => $request->selling_price,
         ]);
         return response()->json([
             "message" => "تمت إضافة التصنيف بنجاح",
             "status" => 201,
-            'data' => $category,
+            'data' => $price_range,
         ]);
     }
     /**
@@ -83,9 +48,17 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function getStaticPrice(Request $request)
     {
-        //
+
+        $price_range = PriceRange::where('price_from', '<=', $request->price)
+            ->where('price_to', '>=', $request->price)
+            ->get();
+        return response()->json([
+            "message" => "تمت إضافة التصنيف بنجاح",
+            "status" => 201,
+            'data' => $price_range,
+        ]);
     }
 
     /**

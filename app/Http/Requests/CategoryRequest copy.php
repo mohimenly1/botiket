@@ -28,7 +28,7 @@ class CategoryRequest extends AbstractFormRequest
     {
         return [
             'name' => 'required|unique:categories',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            //'image' => 'required|image|mimes:jpeg,png,jpg',
             'gender_id' => 'required|exists:genders,id',
 
 
