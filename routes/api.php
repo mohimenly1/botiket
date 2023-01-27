@@ -26,6 +26,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WishlistItemController;
 use App\Http\Controllers\GendersController;
+use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\PriceRangesController;
 use App\Http\Controllers\SubCategoryController;
 use App\Models\Banner;
@@ -377,3 +378,4 @@ Route::DELETE('delete-color/{id}', [ColorController::class, 'destroy']);
 Route::POST('add-sub-category', [SubCategoryController::class, 'store']);
 
 Route::POST('add-price-range', [PriceRangesController::class, 'store']);
+Route::POST('add-product-to-highlight', [HighlightController::class, 'store']);

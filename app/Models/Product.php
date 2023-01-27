@@ -48,7 +48,7 @@ class Product extends Model
         'gender_id',
         'is_archived',
         'is_new',
-        'highlight',
+
         'season'
     ];
     // protected $appends = ['mediasFirst'];
@@ -69,6 +69,11 @@ class Product extends Model
      *
      * @var string
      */
+
+    function highlight()
+    {
+        return $this->hasMany(Highlight::class);
+    }
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
