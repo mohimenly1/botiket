@@ -376,7 +376,9 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
 Route::GET('colors', [ColorController::class, 'index']);
 Route::DELETE('delete-color/{id}', [ColorController::class, 'destroy']);
 Route::POST('add-sub-category', [SubCategoryController::class, 'store']);
+Route::GET('sub-categories', [SubCategoryController::class, 'index']);
 
 Route::POST('add-price-range', [PriceRangesController::class, 'store']);
 Route::POST('add-product-to-highlight', [HighlightController::class, 'store']);
 Route::DELETE('delete-product-from-highlight/{id}', [HighlightController::class, 'delete']);
+Route::DELETE('delete-price-range/{id}', [PriceRangesController::class, 'delete']);

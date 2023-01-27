@@ -373,22 +373,22 @@ class ProductRepository
                 $old_media = $product->medias()->where('id', $key)->first();
 
                 if ($media["file"] == 0 && $old_media) {
-                    $delete_old_image = Storage::disk('s3')->delete($old_media->path);
+                    $delete_old_image = Storage::disk('public')->delete($old_media->path);
                     $old_media->delete();
                 } elseif ($old_media) {
                     $color_id = Color::where('color_value', $media['color'])->first();
-                    $delete_old_image = Storage::disk('s3')->delete($old_media->path);
+                    $delete_old_image = Storage::disk('public')->delete($old_media->path);
 
 
-                    $image_path = $media['file']->store('/products/' . $product->id, 's3');
-                    Storage::disk('s3')->setVisibility($image_path, 'public');
+                    $image_path = $media['file']->store('/products/' . $product->id, 'public');
+                    Storage::disk('public')->setVisibility($image_path, 'public');
 
-                    $old_media->update(['path' => Storage::disk('s3')->url($image_path), "color_id" => $color_id->id]);
+                    $old_media->update(['path' => Storage::disk('public')->url($image_path), "color_id" => $color_id->id]);
                 } elseif ($media["file"] != 0 && !$old_media) {
                     $color_id = Color::where('color_value', $media['color'])->first();
-                    $image_path = $media['file']->store('/products/' . $product->id, 's3');
-                    Storage::disk('s3')->setVisibility($image_path, 'public');
-                    $product->medias()->create(['path' => Storage::disk('s3')->url($image_path), "color_id" => $color_id->id]);
+                    $image_path = $media['file']->store('/products/' . $product->id, 'public');
+                    Storage::disk('public')->setVisibility($image_path, 'public');
+                    $product->medias()->create(['path' => Storage::disk('public')->url($image_path), "color_id" => $color_id->id]);
                 }
             }
         }
@@ -698,12 +698,12 @@ class ProductRepository
             foreach ($request->medias as $media) {
                 $color_id = Color::where('color_value', $media['color'])->first();
 
-                $image_path = $media['file']->store('/products/' . $this->model->id, 's3');
-                Storage::disk('s3')->setVisibility($image_path, 'public');
+                $image_path = $media['file']->store('/products/' . $this->model->id, 'public');
+                Storage::disk('public')->setVisibility($image_path, 'public');
 
                 $this->model->medias()->create(
                     [
-                        'path' => Storage::disk('s3')->url($image_path),
+                        'path' => Storage::disk('public')->url($image_path),
                         'color_id' => $color_id->id
                     ]
                 );

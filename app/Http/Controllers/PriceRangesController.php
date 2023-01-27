@@ -37,7 +37,7 @@ class PriceRangesController extends Controller
             'selling_price' => $request->selling_price,
         ]);
         return response()->json([
-            "message" => "تمت إضافة التصنيف بنجاح",
+            "message" => "تمت إضافة نسبة بنجاح",
             "status" => 201,
             'data' => $price_range,
         ]);
@@ -55,7 +55,7 @@ class PriceRangesController extends Controller
             ->where('price_to', '>=', $request->price)
             ->get();
         return response()->json([
-            "message" => "تمت إضافة التصنيف بنجاح",
+            "message" => "تمت إضافة نسبة الربح بنجاح",
             "status" => 201,
             'data' => $price_range,
         ]);
@@ -90,7 +90,7 @@ class PriceRangesController extends Controller
             'selling_price' => $request->selling_price,
         ]);
         return response()->json([
-            "message" => "تمت تعديل التصنيف بنجاح",
+            "message" => "تمت تعديل نسبة بنجاح",
             "status" => 202,
             'data' => $PriceRange,
         ]);
@@ -100,12 +100,12 @@ class PriceRangesController extends Controller
     }
     public function delete($id)
     {
-        $category = PriceRange::find($id);
-        $category->delete();
+        $PriceRange = PriceRange::where('id', $id)->delete();
+
         return response()->json([
-            "message" => "تمت حذف التصنيف بنجاح",
+            "message" => "تمت حذف نسبة الربح بنجاح",
             "status" => 202,
-            'data' => $category,
+            'data' => $PriceRange,
         ]);
     }
 }
