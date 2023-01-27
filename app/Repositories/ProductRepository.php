@@ -63,14 +63,14 @@ class ProductRepository
                     $query->where('class_a_access', '=', 1);
                 })
                 ->filter(Request()->all())
-                ->paginate(10, ['id', 'highlight', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
+                ->paginate(10, ['id', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
             return $model;
         } elseif ($user->role == 'store-admin') {
             $model =  Product::with(['gender:id,name', 'category:id,name', 'subCategory:id,name', 'firstMedia'])
                 ->filter(Request()->only("search"))
                 ->where('store_id', $user->store()->first()->id)
                 ->with(['gender:id,name', 'category:id,name', 'subCategory:id,name', 'firstMedia'])
-                ->paginate(10, ['id', 'highlight', 'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
+                ->paginate(10, ['id',  'title', 'sku', 'price', 'offer_id', 'gender_id', 'category_id', 'sub_category_id']);
             return $model;
         }
     }
