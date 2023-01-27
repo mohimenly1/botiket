@@ -17,6 +17,7 @@ class CreateCartItemsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('product_id')->unsigned();
+            $table->integer('color_id')->unsigned();
             $table->double('discount')->nullable();
             $table->double('quantity')->default(1);
             $table->timestamps();

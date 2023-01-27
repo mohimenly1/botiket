@@ -379,3 +379,4 @@ Route::POST('add-sub-category', [SubCategoryController::class, 'store']);
 
 Route::POST('add-price-range', [PriceRangesController::class, 'store']);
 Route::POST('add-product-to-highlight', [HighlightController::class, 'store']);
+Route::DELETE('delete-product-from-highlight/{id}', [HighlightController::class, 'delete']);
