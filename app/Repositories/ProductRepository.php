@@ -294,7 +294,7 @@ class ProductRepository
         $this->model->category_id = $request->category_id;
         $this->model->gender_id = $request->gender_id;
         $this->model->offer_id = $request->offer_id;
-        $this->model->highlight = $request->highlight;
+
         $this->model->season = $request->season;
 
         if ($this->model->discount_price > $this->model->price || $this->model->discount_price < ($this->model->price * 0.05))
