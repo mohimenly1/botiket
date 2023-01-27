@@ -46,29 +46,29 @@ class CategoryController extends Controller
         $gender = Gender::find($request->gender_id);
         ///
 
-        $image_path = $request->image->store('/categories', 'public');
-        Storage::disk('public')->setVisibility($image_path, 'public');
-        $image = Storage::disk('public')->url($image_path);
+        // $image_path = $request->image->store('/categories', 'public');
+        // Storage::disk('public')->setVisibility($image_path, 'public');
+        // $image = Storage::disk('public')->url($image_path);
 
 
-        // $image = $request->image;
-        // $imageName = $request->name . $gender->name . "-" . rand(1000, 2000) . '.jpg';
-        // $image->move(public_path('images/categories'), $imageName);
-        // $request->image = '/images/categories/' . $imageName;
+        $image = $request->image;
+        $imageName = $request->name . $gender->name . "-" . rand(1000, 2000) . '.jpg';
+        $image->move(public_path('images/categories'), $imageName);
+        $request->image = '/images/categories/' . $imageName;
         //////---
-        $second_image_path = $request->second_image->store('/categories', 'public');
-        Storage::disk('public')->setVisibility($second_image_path, 'public');
-        $second_image = Storage::disk('public')->url($second_image_path);
+        // $second_image_path = $request->second_image->store('/categories', 'public');
+        // Storage::disk('public')->setVisibility($second_image_path, 'public');
+        // $second_image = Storage::disk('public')->url($second_image_path);
         //dd($image);
-        // $second_image = $request->second_image;
-        // $imageName_second_image = $request->name . $gender->name . "-" . rand(3000, 4000) . '.jpg';
-        // $second_image->move(public_path('images/categories'), $imageName_second_image);
-        // $request->second_image = '/images/categories/' . $imageName_second_image;
+        $second_image = $request->second_image;
+        $imageName_second_image = $request->name . $gender->name . "-" . rand(3000, 4000) . '.jpg';
+        $second_image->move(public_path('images/categories'), $imageName_second_image);
+        $request->second_image = '/images/categories/' . $imageName_second_image;
         /////---
         $category = Category::create([
             'name' => $request->name,
-            'image' => $image,
-            'second_image' => $second_image,
+            'image' => $request->image,
+            'second_image' => $request->second_image,
             'gender_id' => $request->gender_id,
         ]);
         return response()->json([

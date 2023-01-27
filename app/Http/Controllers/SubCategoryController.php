@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubCategoryRequest;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,23 @@ class SubCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store(SubCategoryRequest $request)
     {
-        //
+        $image = $request->image;
+        $imageName_image = $request->name . $request->name . "-" . rand(3000, 4000) . '.jpg';
+        $image->move(public_path('images/sub_categories'), $imageName_image);
+        $request->image = '/images/sub_categories/' . $imageName_image;
+        $SubCategory = SubCategory::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'image' => $request->image
+        ]);
+
+        return response()->json([
+            "message" => "تمت حذف التصنيف بنجاح",
+            "status" => 202,
+            'data' => $SubCategory,
+        ]);
     }
 
     /**
@@ -33,10 +48,7 @@ class SubCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.

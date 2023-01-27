@@ -49,6 +49,11 @@ class Category extends Model
         $image = URL::to('/') . $this->attributes['image'];
         return $image;
     }
+    public function getSecondImageAttribute()
+    {
+        $image = URL::to('/') . $this->attributes['second_image'];
+        return $image;
+    }
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class);

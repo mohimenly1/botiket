@@ -15,9 +15,12 @@ class ColorController extends Controller
      */
     public function index()
     {
-        //
+        $color = Color::all();
+        return response()->json([
+            "status" => 200,
+            'data' => $color,
+        ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -82,7 +85,17 @@ class ColorController extends Controller
      */
     public function update(Request $request, Color $color)
     {
-        //
+        $item = Color::find($color);
+        $data = $item->update([
+            'name' => $request->name,
+            'color_value' => $request->color_value,
+
+        ]);
+        return response()->json([
+            "message" => "تمت إضافة اللون بنجاح",
+            "status" => 201,
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -91,8 +104,15 @@ class ColorController extends Controller
      * @param  \App\Models\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Color $color)
+    public function destroy(Color $id)
     {
-        //
+        // $color = Color::find($id);
+        // dd($color);
+        $id->delete();
+        return response()->json([
+            "message" => "تمت حذف اللون بنجاح",
+            "status" => 202,
+            'data' => $id,
+        ]);
     }
 }

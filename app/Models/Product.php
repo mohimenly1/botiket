@@ -102,11 +102,22 @@ class Product extends Model
             $query->where('brand_id', $search['brand']);
         }
 
-        if (isset($search['price'])) {
-            $query->whereBetween('price', ['50', '70']);
+        if (isset($search['from_price']) && isset($search['to_price'])) {
+            $query->whereBetween('price', [$search['from_price'], $search['to_price']]);
         }
 
 
+        if (isset($search['category_id'])) {
+            $query->where('category_id', $search['category_id']);
+        }
+        if (isset($search['gender_id'])) {
+            $query->where('gender_id', $search['gender_id']);
+        }
+
+        if (isset($search['sub_category_id'])) {
+            $query->where('sub_category_id', $search['sub_category_id']);
+        }
+
 
         // if (isset($search['price'])) {
         //     $query->where('price', '<=', $search['price']);
@@ -118,12 +129,17 @@ class Product extends Model
         //     $query->where('price', '<=', $search['price']);
         // }
 
+        if (isset($search['only_discounted'])) {
+            if ($search['only_discounted'] == 1) {
+                $query->where('discount_price', '!=', NULL);
+            }
+        }
 
 
-        if (isset($search['search']['sku'])) {
+        if (isset($search['sku'])) {
 
 
-            $query->where('sku', '=',  $search['search']['sku']);
+            $query->where('sku', '=',  $search['sku']);
         }
         if (isset($search['title'])) {
             $query->where('title', 'like', '%' . $search['title'] . '%');

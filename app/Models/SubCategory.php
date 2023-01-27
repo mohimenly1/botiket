@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\URL;
 
 class SubCategory extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +19,7 @@ class SubCategory extends Model
     protected $fillable = [
         'name',
         'category_id',
+        'image'
     ];
 
     /**
@@ -36,12 +38,16 @@ class SubCategory extends Model
     }
     public function products()
     {
-        return $this->hasMany(Product::class,'sub_category_id');
+        return $this->hasMany(Product::class, 'sub_category_id');
     }
 
     public function percentage()
     {
         return $this->hasOne(Percentage::class);
     }
-
+    public function getImageAttribute()
+    {
+        $image = URL::to('/') . $this->attributes['image'];
+        return $image;
+    }
 }

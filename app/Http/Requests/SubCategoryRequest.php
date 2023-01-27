@@ -7,7 +7,7 @@ use Auth;
 use Illuminate\Validation\Rule;
 
 
-class CategoryRequest extends AbstractFormRequest
+class SubCategoryRequest extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,9 +27,9 @@ class CategoryRequest extends AbstractFormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:categories',
-            //'image' => 'required|image|mimes:jpeg,png,jpg',
-            'gender_id' => 'required|exists:genders,id',
+            'name' => 'required|unique:sub_categories',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'category_id' => 'required',
 
 
 

@@ -27,6 +27,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WishlistItemController;
 use App\Http\Controllers\GendersController;
 use App\Http\Controllers\PriceRangesController;
+use App\Http\Controllers\SubCategoryController;
 use App\Models\Banner;
 use App\Models\Delivery;
 use App\Models\Percentage;
@@ -369,4 +370,8 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
     Route::DELETE('delete-category/{id}', [CategoryController::class, 'destroy']);
     Route::POST('add-color', [ColorController::class, 'store']);
     Route::POST('get-static-price', [PriceRangesController::class, 'getStaticPrice']);
+    Route::GET('price-ranges', [PriceRangesController::class, 'index']);
 });
+Route::GET('colors', [ColorController::class, 'index']);
+Route::DELETE('delete-color/{id}', [ColorController::class, 'destroy']);
+Route::POST('add-sub-category', [SubCategoryController::class, 'store']);

@@ -69,8 +69,8 @@ class PriceRangesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return response()->json($category);
+        $PriceRange = PriceRange::find($id);
+        return response()->json($PriceRange);
     }
 
     /**
@@ -82,40 +82,25 @@ class PriceRangesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $gender = Gender::find($request->gender_id);
-        if (request()->has('image')) {
-            $image = $request->image;
-            $imageName = $request->name . $gender->name . '.jpg';
-            $image->move(public_path('images/categories'), $imageName);
-            $request->image = '/images/categories/' . $imageName;
-            $category = Category::find($request->id);
-            $category->update([
-                'name' => $request->name,
-                'image' => $request->image,
-                'gender_id' => $request->gender_id,
-            ]);
-        } else {
-            $category = Category::find($request->id);
-            $category->update(
-                $request->all()
-            );
-        }
+        $PriceRange = PriceRange::find($id);
+
+        $PriceRange->update([
+            'price_from' => $request->price_from,
+            'price_to' => $request->price_to,
+            'selling_price' => $request->selling_price,
+        ]);
         return response()->json([
             "message" => "تمت تعديل التصنيف بنجاح",
             "status" => 202,
-            'data' => $category,
+            'data' => $PriceRange,
         ]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $category = Category::find($id);
+    }
+    public function delete($id)
+    {
+        $category = PriceRange::find($id);
         $category->delete();
         return response()->json([
             "message" => "تمت حذف التصنيف بنجاح",
