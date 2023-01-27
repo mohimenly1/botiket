@@ -375,3 +375,5 @@ Route::group(['middleware' => ['api', 'jwtMiddleware']], function () {
 Route::GET('colors', [ColorController::class, 'index']);
 Route::DELETE('delete-color/{id}', [ColorController::class, 'destroy']);
 Route::POST('add-sub-category', [SubCategoryController::class, 'store']);
+
+Route::POST('add-price-range', [PriceRangesController::class, 'store']);
