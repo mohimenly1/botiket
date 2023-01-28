@@ -10,7 +10,8 @@ class Highlight extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'product_id'
+        'product_id',
+        'note'
 
     ];
 
