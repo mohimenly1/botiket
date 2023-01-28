@@ -16,7 +16,7 @@ class HighlightController extends Controller
      */
     public function index()
     {
-        $data = Highlight::paginate(10);
+        $data = Highlight::with('product')->paginate(10);
         return response()->json([
             "status" => 200,
             'data' => $data,
