@@ -381,7 +381,7 @@ Route::GET('sub-categories', [SubCategoryController::class, 'index']);
 
 /* -------------------------------- get main-categories in new-subCatgeory.vue -------------------------------- */
 
-Route::GET('categories-sub',[GetCategoriesController::class,'index']);
+Route::GET('categories-sub', [GetCategoriesController::class, 'index']);
 Route::POST('add-price-range', [PriceRangesController::class, 'store']);
 Route::POST('add-product-to-highlight', [HighlightController::class, 'store']);
 
@@ -389,3 +389,4 @@ Route::POST('add-product-to-highlight', [HighlightController::class, 'store']);
 Route::DELETE('delete-product-from-highlight/{id}', [HighlightController::class, 'delete']);
 Route::DELETE('delete-price-range/{id}', [PriceRangesController::class, 'delete']);
 Route::GET('Highlights', [HighlightController::class, 'index']);
+Route::DELETE('delete-highlight/{id}', [HighlightController::class, 'delete']);

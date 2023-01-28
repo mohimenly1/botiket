@@ -101,6 +101,11 @@ class HighlightController extends Controller
     {
         $Highlight = Highlight::find($id);
         $Highlight->delete();
+        return response()->json([
+            "message" => "تمت  الحدف بنجاح",
+            "status" => 201,
+            'data' => '',
+        ]);
     }
 
     public function restore($id)
