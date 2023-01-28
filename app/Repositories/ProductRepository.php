@@ -315,12 +315,11 @@ class ProductRepository
                 $color_id = Color::where('color_value', $media['color'])->first();
 
                 $image_path = $media['file']->store('/products/' . $this->model->id  . '/' . $this->model->sku . '-' . $key, 'public');
-
-                Storage::disk('public')->setVisibility($image_path, 'public');
-
+                $image_url = Storage::url($image_path);
+                
                 $this->model->medias()->create(
                     [
-                        'path' => Storage::disk('public')->url($image_path),
+                        'path' => $image_url,
                         'color_id' => $color_id->id
                     ]
                 );

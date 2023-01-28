@@ -26,6 +26,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WishlistItemController;
 use App\Http\Controllers\GendersController;
+use App\Http\Controllers\GetCategoriesController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\PriceRangesController;
 use App\Http\Controllers\SubCategoryController;
@@ -378,6 +379,9 @@ Route::DELETE('delete-color/{id}', [ColorController::class, 'destroy']);
 Route::POST('add-sub-category', [SubCategoryController::class, 'store']);
 Route::GET('sub-categories', [SubCategoryController::class, 'index']);
 
+/* -------------------------------- get main-categories in new-subCatgeory.vue -------------------------------- */
+
+Route::GET('categories-sub',[GetCategoriesController::class,'index']);
 Route::POST('add-price-range', [PriceRangesController::class, 'store']);
 Route::POST('add-product-to-highlight', [HighlightController::class, 'store']);
 
