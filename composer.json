@@ -17,6 +17,7 @@
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "1.0.29",
+        "mxl/firebase-dynamic-link": "^1.0",
         "spatie/laravel-query-builder": "^3.5",
         "tymon/jwt-auth": "^1.0"
     },

@@ -116,6 +116,7 @@ class ComposerStaticInit8a5ce29f7e9fde2140f8d0a0599c1653
         'M' => 
         array (
             'Monolog\\' => 8,
+            'MichaelLedin\\FirebaseDynamicLink\\' => 33,
         ),
         'L' => 
         array (
@@ -390,6 +391,10 @@ class ComposerStaticInit8a5ce29f7e9fde2140f8d0a0599c1653
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'MichaelLedin\\FirebaseDynamicLink\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src',
+        ),
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
@@ -631,6 +636,7 @@ class ComposerStaticInit8a5ce29f7e9fde2140f8d0a0599c1653
         'App\\Http\\Controllers\\FcmTokenController' => __DIR__ . '/../..' . '/app/Http/Controllers/FcmTokenController.php',
         'App\\Http\\Controllers\\GenderController' => __DIR__ . '/../..' . '/app/Http/Controllers/GenderController.php',
         'App\\Http\\Controllers\\GendersController' => __DIR__ . '/../..' . '/app/Http/Controllers/GendersController.php',
+        'App\\Http\\Controllers\\GetCategoriesController' => __DIR__ . '/../..' . '/app/Http/Controllers/GetCategoriesController.php',
         'App\\Http\\Controllers\\HighlightController' => __DIR__ . '/../..' . '/app/Http/Controllers/HighlightController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\InvoicesController' => __DIR__ . '/../..' . '/app/Http/Controllers/InvoicesController.php',
@@ -4638,6 +4644,14 @@ class ComposerStaticInit8a5ce29f7e9fde2140f8d0a0599c1653
         'League\\MimeTypeDetection\\GeneratedExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/GeneratedExtensionToMimeTypeMap.php',
         'League\\MimeTypeDetection\\MimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/MimeTypeDetector.php',
         'League\\MimeTypeDetection\\OverridingExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/OverridingExtensionToMimeTypeMap.php',
+        'MichaelLedin\\FirebaseDynamicLink\\Android' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/Android.php',
+        'MichaelLedin\\FirebaseDynamicLink\\BaseBuilder' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/BaseBuilder.php',
+        'MichaelLedin\\FirebaseDynamicLink\\DynamicLink' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/DynamicLink.php',
+        'MichaelLedin\\FirebaseDynamicLink\\GooglePlayAnalytics' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/GooglePlayAnalytics.php',
+        'MichaelLedin\\FirebaseDynamicLink\\IOS' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/IOS.php',
+        'MichaelLedin\\FirebaseDynamicLink\\ITunesConnectAnalytics' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/ITunesConnectAnalytics.php',
+        'MichaelLedin\\FirebaseDynamicLink\\SimpleBuilder' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/SimpleBuilder.php',
+        'MichaelLedin\\FirebaseDynamicLink\\SocialMetaTag' => __DIR__ . '/..' . '/mxl/firebase-dynamic-link/src/SocialMetaTag.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d5072883b21c8e3053d822521093021",
+    "content-hash": "ae62cffb3878251804e79195c9e20ee9",
     "packages": [
         {
             "name": "apility/laravel-fcm",
@@ -2473,6 +2473,57 @@
                 "source": "https://github.com/jmespath/jmespath.php/tree/2.6.1"
             },
             "time": "2021-06-14T00:11:39+00:00"
+        },
+        {
+            "name": "mxl/firebase-dynamic-link",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mxl/firebase-dynamic-link-php.git",
+                "reference": "7b8bf1dc847d016d28c74120001270f3c79a58fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mxl/firebase-dynamic-link-php/zipball/7b8bf1dc847d016d28c74120001270f3c79a58fd",
+                "reference": "7b8bf1dc847d016d28c74120001270f3c79a58fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MichaelLedin\\FirebaseDynamicLink\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Ledin",
+                    "email": "mledin89@gmail.com"
+                }
+            ],
+            "description": "Manually construct a Dynamic Link URL",
+            "homepage": "https://github.com/mxl/firebase-dynamic-link",
+            "keywords": [
+                "constructing",
+                "dynamic",
+                "firebase",
+                "link",
+                "manual"
+            ],
+            "support": {
+                "issues": "https://github.com/mxl/firebase-dynamic-link/issues",
+                "source": "https://github.com/mxl/firebase-dynamic-link"
+            },
+            "time": "2020-07-23T06:16:37+00:00"
         },
         {
             "name": "namshi/jose",

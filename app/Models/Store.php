@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\URL;
 
 class Store extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
     /**
-        * The attributes that are mass assignable.
-        *
-        * @var array
-        */
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'logo',
@@ -44,25 +44,32 @@ class Store extends Model
         'deleted_at',
         'pivot',
     ];
+
+
+
+    public function getLinkAttribute()
+    {
+        $link = env('DYNAMIC_LINK');;
+        return $link;
+    }
     public function getLogoAttribute()
     {
-        $image=URL::to('/').$this->attributes['logo'];
+        $image = URL::to('/') . $this->attributes['logo'];
         return $image;
     }
     public function getBackgroundImageAttribute()
     {
         if ($this->attributes['background_image']) {
-            $image=URL::to('/').$this->attributes['background_image'];
+            $image = URL::to('/') . $this->attributes['background_image'];
             return $image;
-        }else{
+        } else {
             return null;
-
         }
     }
-    
+
     public function users()
     {
-        return $this->belongsToMany(User::class,'store_user','store_id');
+        return $this->belongsToMany(User::class, 'store_user', 'store_id');
     }
     public function followrs()
     {
@@ -91,6 +98,5 @@ class Store extends Model
     }
     public function following()
     {
-       
     }
 }
